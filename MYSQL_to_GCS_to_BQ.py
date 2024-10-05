@@ -1,4 +1,5 @@
 from airflow import DAG
+from airflow.decorators import task
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
@@ -42,5 +43,8 @@ with DAG("mysql_to_gcs", start_date=datetime(2024, 9, 1),
 		wait_for_completion=False
 	)
 
+    @task
+    def done():
+       print("done")
 
-    mysql_to_gcs_export >> load_csv_delimiter >> trigger
+    mysql_to_gcs_export >> load_csv_delimiter >> trigger >> done()
