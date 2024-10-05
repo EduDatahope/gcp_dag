@@ -10,7 +10,7 @@ from datetime import datetime
 with DAG("gcp_job_exec2", start_date=datetime(2024, 9, 1),
     schedule_interval="@daily", catchup=False) as dag:
 
-     call_stored_procedure = BigQueryInsertJobOperator(
+     call_stored_procedure2 = BigQueryInsertJobOperator(
      task_id="call_stored_procedure2",
      configuration={
         "query": {
