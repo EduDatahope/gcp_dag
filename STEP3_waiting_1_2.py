@@ -6,10 +6,7 @@ from datetime import datetime
 @dag(start_date=datetime(2024, 9, 1),schedule="@daily", catchup=False)
 def waiting_step_1_2():
 
-    waiting_for_1 = ExternalTaskSensor(
-        task_id = 'waiting_sp1',
-        external_dag_id = 'dag_step1',
-        external_task_id = 'call_stored_procedure1')
+
 
     waiting_for_2 = ExternalTaskSensor(
         task_id = 'waiting_sp2',
@@ -20,6 +17,6 @@ def waiting_step_1_2():
     def final_msg():
         print("done")
 
-    waiting_for_1 >> waiting_for_2 >> final_msg()
+    waiting_for_2 >> final_msg()
 
 waiting_step_1_2()
