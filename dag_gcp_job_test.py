@@ -14,7 +14,7 @@ with DAG("gcp_job_exec", start_date=datetime(2024, 9, 1),
      task_id="call_stored_procedure",
      configuration={
         "query": {
-            "query": "CALL `dwh-dtp.bdpkmn.sp_load1`('comp***'); ",
+            "query": "CALL `dwh-dtp.bdpkmn.sp_load1`('comp$$$$$'); ",
             "useLegacySql": False,
              }
              },
