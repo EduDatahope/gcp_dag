@@ -21,7 +21,4 @@ with DAG("gcp_job_exec", start_date=datetime(2024, 9, 1),
      location='US',
      )
 
-
-
-
      [call_stored_procedure]
