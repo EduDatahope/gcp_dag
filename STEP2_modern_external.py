@@ -1,19 +1,20 @@
 from airflow.decorators import dag , task
-from airflow.operators.python import PythonOperator, BranchPythonOperator
-from airflow.operators.bash import BashOperator
+from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from airflow.utils.dates import days_ago
-from random import randint
 from datetime import datetime
-
 
 @dag(start_date=datetime(2024, 9, 1),schedule="@daily", catchup=False)
 def dag_step2():
 
+     waiting_for_1 = ExternalTaskSensor(
+        task_id = 'waiting_for_1',
+        external_dag_id = 'dag_step1',
+        external_task_id = 'call_stored_procedure1')
+
      @task
      def call_stored_procedure2():
       BigQueryInsertJobOperator(
-      task_id="call_stored_procedure",
+      task_id="call_stored_procedure2",
       configuration={
         "query": {
             "query": "CALL `dwh-dtp.bdpkmn.sp_load2`('comp2**ex'); ",
@@ -22,6 +23,7 @@ def dag_step2():
              },
      location='US',
      )
-     call_stored_procedure2()
+
+     waiting_for_1 >> call_stored_procedure2()
 
 dag_step2()
