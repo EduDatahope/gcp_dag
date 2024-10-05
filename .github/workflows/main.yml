@@ -27,5 +27,5 @@ jobs:
 
     - name: Deploy via GCS
       run: |
-        gsutil -m rm -rf gs://dag_preview/dag/* || echo "$?"
-        gsutil -m cp -r * gs://dag_preview/dag/
+        gsutil -m rm -rf gs://us-central1-composer-7d8861d4-bucket/dags/* || echo "$?"
+        gsutil -m cp -r * gs://us-central1-composer-7d8861d4-bucket/dags/
