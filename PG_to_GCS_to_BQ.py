@@ -18,7 +18,7 @@ with DAG("postgres_to_gcs", start_date=datetime(2024, 9, 1),
         sql="select  * from dwh.tvw_pkmn_clean",
         bucket="dag_preview",
         filename="postgres_to_gcs.csv",
-        field_delimiter=";"
+        field_delimiter=";",
         export_format="csv",
     )
 
