@@ -7,7 +7,7 @@ from random import randint
 from datetime import datetime
 
 
-with DAG("gcp_job_exec2", start_date=datetime(2024, 9, 1),
+with DAG("gcp_job_exec2_step", start_date=datetime(2024, 9, 1),
     schedule_interval="@daily", catchup=False) as dag:
 
      call_stored_procedure2 = BigQueryInsertJobOperator(
