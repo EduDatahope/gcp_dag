@@ -1,4 +1,5 @@
 from airflow import DAG
+from airflow.decorators import task
 from airflow.sensors.external_task_sensor import ExternalTaskSensor
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
@@ -28,4 +29,7 @@ with DAG("gcp_job_sp_ex2", start_date=datetime(2024, 9, 1),
         external_task_id = None,
         timeout=30)
 
-     waiting_for_1 >> step_gcp_job_sp_ex2
+     @task
+     def done():
+        print("done")
+     waiting_for_1 >> step_gcp_job_sp_ex2 >> done()
