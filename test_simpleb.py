@@ -1,51 +1,24 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 from airflow.operators.bash import BashOperator
-from datetime import datetime
+from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
+from airflow.utils.dates import days_ago
 from random import randint
+from datetime import datetime
 
-def _choose_best_model(ti):
-  accuracies = ti.xcom_pull(task_ids=[
-    'training_model_A',
-    'training_model_B',
-    'training_model_C'
-  ])
-  if max(accuracies) > 8:
-    return 'is_accurate'
-  return 'is_inaccurate'
 
-def _training_model(model):
-  print(model)
-  return randint(1, 10)
+with DAG("gcp_job_exec", start_date=datetime(2024, 9, 1),
+    schedule_interval="@daily", catchup=False) as dag:
 
-with DAG("my_dag_2",
-  start_date=datetime(2023, 1 ,1),
-  schedule_interval='@daily',
-  catchup=False):
+     call_stored_procedure = BigQueryInsertJobOperator(
+     task_id="call_stored_procedure",
+     configuration={
+        "query": {
+            "query": "CALL `dwh-dtp.bdpkmn.sp_load2`('comp$$$$$'); ",
+            "useLegacySql": False,
+             }
+             },
+     location='US',
+     )
 
-  training_model_tasks = [
-    PythonOperator(
-      task_id=f"training_model_{model_id}",
-      python_callable=_training_model,
-      op_kwargs={
-        "model": model_id
-      }
-    ) for model_id in ['A', 'B', 'C']
-  ]
-
-  choose_best_model = BranchPythonOperator(
-    task_id="choose_best_model",
-    python_callable=_choose_best_model
-  )
-
-  accurate = BashOperator(
-    task_id="is_accurate",
-    bash_command="echo 'accurate'"
-  )
-
-  inaccurate = BashOperator(
-    task_id="is_inaccurate",
-    bash_command=" echo 'inaccurate'"
-  )
-
-  training_model_tasks >> choose_best_model >> [is_accurate, is_inaccurate]
+     [call_stored_procedure]
