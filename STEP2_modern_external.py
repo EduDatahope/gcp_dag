@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 with DAG("gcp_job_sp_ex2", start_date=datetime(2024, 10, 5),
-    schedule_interval="*/5 * * * *", catchup=False) as dag:
+    schedule_interval="*/45 * * * *", catchup=False) as dag:
 
      step_gcp_job_sp_ex2 = BigQueryInsertJobOperator(
      task_id="step_gcp_job_sp_ex2",
