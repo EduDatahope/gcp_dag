@@ -24,6 +24,6 @@ with DAG("gcp_job_sp_ex1", start_date=datetime(2024, 10, 5),
 
      @task
      def done():
-       print("done")
+       print("done :)")
 
      step_gcp_job_sp_ex1 >> done()
