@@ -3,7 +3,8 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from datetime import datetime
 
-@dag(start_date=datetime(2023, 1, 1), schedule='@daily', catchup=False)
+@dag(start_date=datetime(2023, 1, 1), schedule='@daily', description ='venta_step1_extract' ,
+    tags = ['etl venta'] , catchup=False)
 def triger_1_modern():
 
 	@task
