@@ -6,9 +6,9 @@ from datetime import datetime
 @dag(start_date=datetime(2023, 1, 1), schedule='@daily', catchup=False)
 def triger_2_modern():
 
-	@task
-	def start2():
-	 BigQueryInsertJobOperator(
+    @task
+    def start2():
+     BigQueryInsertJobOperator(
      task_id="step_gcp_job_m2",
      configuration={
         "query": {
