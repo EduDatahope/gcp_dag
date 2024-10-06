@@ -13,7 +13,7 @@ def triger_2_modern():
      task_id="step_gcp_job_m2",
      configuration={
         "query": {
-            "query": "CALL `dwh-dtp.bdpkmn.sp_load2`('trg2**'); ",
+            "query": "CALL `dwh-dtp.bdpkmn.sp_load2`('trg2**&'); ",
             "useLegacySql": False,
              }
              },
