@@ -1,27 +1,16 @@
-import re
+import base64
+from typing import Any
+import airflow_api
 
-from google.cloud import dataproc_v1
-from google.cloud import storage
 
-project_id = 'dwhp-437913'
-region = 'us-central1'
-cluster_name ='cluster-b4cd'
-gcs_bucket = 'devops-python-dhope'
-spark_filename = 'simple_bq_example.py'
-
-# Create the job client.
-job_client = dataproc_v1.JobControllerClient(
-    client_options={"api_endpoint": f"{region}-dataproc.googleapis.com:443"}
-)
-
-# Create the job config.
-job = {
-    "placement": {"cluster_name": cluster_name},
-    "pyspark_job": {"main_python_file_uri": f"gs://{gcs_bucket}/{spark_filename}"},
-}
-
-operation = job_client.submit_job_as_operation(
-    request={"project_id": project_id, "region": region, "job": job}
-)
-
-response = operation.result()
+def airflow_invoker(event, context):
+    """
+    Se debe crear el file .py con airflow_api
+    el valor del web server es del airflow
+    """
+    web_server_url = (
+        "https://d2c4d3bf3ed74cab8ad2dfe1131d9854-dot-us-central1.composer.googleusercontent.com"
+    )
+    # Replace with the ID of the DAG that you want to run.
+    dag_id = 'dataproc_workflow_dag'
+    airflow_api.trigger_dag(web_server_url, dag_id, event)
